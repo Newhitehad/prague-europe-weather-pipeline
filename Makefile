@@ -1,4 +1,5 @@
-include .env
+# Load local developer overrides when present, but do not require .env in CI.
+-include .env
 export
 
 VENV := .venv
