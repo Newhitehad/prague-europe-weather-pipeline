@@ -1,0 +1,83 @@
+{
+  "source": "open-meteo",
+  "city": "Budapest",
+  "ingested_at_utc": "2099-01-01T00:00:00Z",
+  "payload": {
+    "city": "Budapest",
+    "request_params": {
+      "latitude": 47.4979,
+      "longitude": 19.0402,
+      "current": "temperature_2m,relative_humidity_2m,wind_speed_10m",
+      "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum",
+      "timezone": "UTC",
+      "forecast_days": 7
+    },
+    "api_response": {
+      "latitude": 47.501236,
+      "longitude": 19.03534,
+      "generationtime_ms": 0.09846687316894531,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 113.0,
+      "current_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature_2m": "\u00b0C",
+        "relative_humidity_2m": "%",
+        "wind_speed_10m": "km/h"
+      },
+      "current": {
+        "time": "2026-03-13T14:45",
+        "interval": 900,
+        "temperature_2m": 18.1,
+        "relative_humidity_2m": 40,
+        "wind_speed_10m": 13.0
+      },
+      "daily_units": {
+        "time": "iso8601",
+        "temperature_2m_max": "\u00b0C",
+        "temperature_2m_min": "\u00b0C",
+        "precipitation_sum": "mm"
+      },
+      "daily": {
+        "time": [
+          "2026-03-13",
+          "2026-03-14",
+          "2026-03-15",
+          "2026-03-16",
+          "2026-03-17",
+          "2026-03-18",
+          "2026-03-19"
+        ],
+        "temperature_2m_max": [
+          18.3,
+          17.0,
+          16.6,
+          16.5,
+          13.5,
+          10.1,
+          15.0
+        ],
+        "temperature_2m_min": [
+          9.2,
+          7.4,
+          6.7,
+          3.8,
+          5.5,
+          5.7,
+          5.5
+        ],
+        "precipitation_sum": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          2.1,
+          0.0
+        ]
+      }
+    }
+  }
+}

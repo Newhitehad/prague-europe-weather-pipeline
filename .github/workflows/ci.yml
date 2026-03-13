@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+env:
+  DB_HOST: localhost
+  DB_PORT: 5432
+  DB_NAME: weather
+  DB_USER: weather
+  DB_PASSWORD: weather
+  API_BASE_URL: https://api.open-meteo.com/v1/forecast
+  REQUEST_TIMEOUT_SECONDS: 30
+  CITIES: Prague,Vienna,Berlin,Warsaw,Budapest
+  RAW_DATA_DIR: data/raw
+
+jobs:
+  lint-and-unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Create virtual environment
+        run: python -m venv .venv
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Run lint and unit tests
+        run: make check
+
+  db-smoke:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: weather
+          POSTGRES_USER: weather
+          POSTGRES_PASSWORD: weather
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U weather -d weather"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Create virtual environment
+        run: python -m venv .venv
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Wait for Postgres
+        run: make wait
+
+      - name: Run deterministic DB smoke test
+        run: make smoke

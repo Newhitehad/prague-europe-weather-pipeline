@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prague Europe Weather Dashboard</title>
+    <script src="{{ url_for('static', path='/theme.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', path='/dashboard.css') }}" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Prague Europe Weather Pipeline</p>
+          <h1>Read-only analytics dashboard for the mart layer.</h1>
+          <p class="hero-text">
+            A portfolio-grade view over the latest weather snapshot, cross-city
+            rankings, rolling metrics, and mart-layer quality checks.
+          </p>
+        </div>
+        <div class="hero-stats">
+          <div class="theme-toolbar">
+            <button
+              type="button"
+              class="theme-toggle"
+              data-theme-toggle
+              data-active-theme="light"
+              aria-label="Toggle dashboard theme"
+              aria-pressed="false"
+            >
+              <span class="theme-toggle__meta">Theme</span>
+              <span class="theme-toggle__row">
+                <span class="theme-toggle__value" data-theme-label>Light</span>
+                <span class="theme-toggle__track" aria-hidden="true">
+                  <span class="theme-toggle__thumb"></span>
+                </span>
+              </span>
+            </button>
+          </div>
+          <article class="stat-card stat-card--accent">
+            <span class="stat-label">Cities</span>
+            <strong class="stat-value">
+              {{ overview.current_city_count or 0 }}
+            </strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Daily Rows</span>
+            <strong class="stat-value">
+              {{ overview.summary_row_count or 0 }}
+            </strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Latest Snapshot</span>
+            <strong class="stat-value stat-value--small">
+              {{ overview.latest_snapshot_at or "Not loaded" }}
+            </strong>
+          </article>
+        </div>
+      </section>
+
+      {% if not is_ready %}
+      <section class="empty-state">
+        <h2>Dashboard not ready yet</h2>
+        <p>
+          The mart layer is empty. Run <code>prague-weather init</code> or
+          <code>make init</code> first, then reload this page.
+        </p>
+      </section>
+      {% else %}
+      <section class="panel">
+        <div class="section-heading">
+          <p class="eyebrow">Current Conditions</p>
+          <h2>Five-city snapshot</h2>
+        </div>
+        <div class="card-grid">
+          {% for row in current_weather %}
+          <article class="weather-card">
+            <header>
+              <h3>{{ row.city }}</h3>
+              <p>{{ row.current_time_utc }}</p>
+            </header>
+            <div class="weather-card__value">{{ row.temperature_c }}°C</div>
+            <dl>
+              <div>
+                <dt>Humidity</dt>
+                <dd>{{ row.relative_humidity_pct }}%</dd>
+              </div>
+              <div>
+                <dt>Wind</dt>
+                <dd>{{ row.wind_speed_kmh }} km/h</dd>
+              </div>
+            </dl>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="panel panel--split">
+        <div>
+          <div class="section-heading">
+            <p class="eyebrow">Temperature Rankings</p>
+            <h2>Daily cross-city comparison</h2>
+          </div>
+          <div class="table-shell">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>City</th>
+                  <th>Rank</th>
+                  <th>Max Temp</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in rankings %}
+                <tr>
+                  <td>{{ row.forecast_date }}</td>
+                  <td>{{ row.city }}</td>
+                  <td>#{{ row.max_temperature_rank }}</td>
+                  <td>{{ row.temperature_max_c }}°C</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-heading">
+            <p class="eyebrow">Quality Checks</p>
+            <h2>Mart validation status</h2>
+          </div>
+          <div class="quality-summary quality-summary--{{ quality['status'] }}">
+            <strong>
+              {% if quality["status"] == "pass" %}
+              PASS
+              {% elif quality["status"] == "fail" %}
+              FAIL
+              {% else %}
+              NOT READY
+              {% endif %}
+            </strong>
+            <span>
+              {{ quality["summary"]["passed"] }} passed /
+              {{ quality["summary"]["failed"] }} failed /
+              {{ quality["summary"]["total"] }} total
+            </span>
+          </div>
+          <div class="quality-list">
+            {% for item in quality["items"] %}
+            <article class="quality-item quality-item--{{ 'pass' if item.passed else 'fail' }}">
+              <header>
+                <strong>{{ item.name }}</strong>
+                <span>{{ "PASS" if item.passed else "FAIL" }}</span>
+              </header>
+              <p>{{ item.description }}</p>
+              <small>Issue count: {{ item.issue_count }}</small>
+            </article>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <p class="eyebrow">Rolling Metrics</p>
+          <h2>Three-day trend window</h2>
+        </div>
+        <div class="table-shell">
+          <table>
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Date</th>
+                <th>Avg Temp</th>
+                <th>Rolling 3d Avg</th>
+                <th>Rolling 3d Rain</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in rolling_metrics %}
+              <tr>
+                <td>{{ row.city }}</td>
+                <td>{{ row.forecast_date }}</td>
+                <td>{{ row.temperature_avg_c }}°C</td>
+                <td>{{ row.rolling_3day_avg_temp_c }}°C</td>
+                <td>{{ row.rolling_3day_precip_mm }} mm</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+      {% endif %}
+    </main>
+  </body>
+</html>

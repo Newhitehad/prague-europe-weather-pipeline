@@ -1,0 +1,83 @@
+{
+  "source": "open-meteo",
+  "city": "Vienna",
+  "ingested_at_utc": "2099-01-01T00:00:00Z",
+  "payload": {
+    "city": "Vienna",
+    "request_params": {
+      "latitude": 48.2082,
+      "longitude": 16.3738,
+      "current": "temperature_2m,relative_humidity_2m,wind_speed_10m",
+      "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum",
+      "timezone": "UTC",
+      "forecast_days": 7
+    },
+    "api_response": {
+      "latitude": 48.2,
+      "longitude": 16.38,
+      "generationtime_ms": 0.1857280731201172,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 179.0,
+      "current_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature_2m": "\u00b0C",
+        "relative_humidity_2m": "%",
+        "wind_speed_10m": "km/h"
+      },
+      "current": {
+        "time": "2026-03-13T14:45",
+        "interval": 900,
+        "temperature_2m": 17.8,
+        "relative_humidity_2m": 35,
+        "wind_speed_10m": 18.3
+      },
+      "daily_units": {
+        "time": "iso8601",
+        "temperature_2m_max": "\u00b0C",
+        "temperature_2m_min": "\u00b0C",
+        "precipitation_sum": "mm"
+      },
+      "daily": {
+        "time": [
+          "2026-03-13",
+          "2026-03-14",
+          "2026-03-15",
+          "2026-03-16",
+          "2026-03-17",
+          "2026-03-18",
+          "2026-03-19"
+        ],
+        "temperature_2m_max": [
+          18.1,
+          18.3,
+          13.6,
+          12.1,
+          10.3,
+          13.0,
+          11.9
+        ],
+        "temperature_2m_min": [
+          5.4,
+          7.3,
+          7.0,
+          7.2,
+          5.1,
+          4.1,
+          5.4
+        ],
+        "precipitation_sum": [
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  }
+}

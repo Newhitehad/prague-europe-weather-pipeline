@@ -1,0 +1,83 @@
+{
+  "source": "open-meteo",
+  "city": "Prague",
+  "ingested_at_utc": "2099-01-01T00:00:00Z",
+  "payload": {
+    "city": "Prague",
+    "request_params": {
+      "latitude": 50.0755,
+      "longitude": 14.4378,
+      "current": "temperature_2m,relative_humidity_2m,wind_speed_10m",
+      "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum",
+      "timezone": "UTC",
+      "forecast_days": 7
+    },
+    "api_response": {
+      "latitude": 50.08,
+      "longitude": 14.439999,
+      "generationtime_ms": 0.20742416381835938,
+      "utc_offset_seconds": 0,
+      "timezone": "GMT",
+      "timezone_abbreviation": "GMT",
+      "elevation": 251.0,
+      "current_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature_2m": "\u00b0C",
+        "relative_humidity_2m": "%",
+        "wind_speed_10m": "km/h"
+      },
+      "current": {
+        "time": "2026-03-13T14:45",
+        "interval": 900,
+        "temperature_2m": 15.9,
+        "relative_humidity_2m": 38,
+        "wind_speed_10m": 14.1
+      },
+      "daily_units": {
+        "time": "iso8601",
+        "temperature_2m_max": "\u00b0C",
+        "temperature_2m_min": "\u00b0C",
+        "precipitation_sum": "mm"
+      },
+      "daily": {
+        "time": [
+          "2026-03-13",
+          "2026-03-14",
+          "2026-03-15",
+          "2026-03-16",
+          "2026-03-17",
+          "2026-03-18",
+          "2026-03-19"
+        ],
+        "temperature_2m_max": [
+          15.9,
+          14.0,
+          8.5,
+          9.9,
+          10.0,
+          13.0,
+          13.7
+        ],
+        "temperature_2m_min": [
+          2.5,
+          7.0,
+          5.4,
+          3.4,
+          2.3,
+          0.9,
+          2.6
+        ],
+        "precipitation_sum": [
+          0.0,
+          0.0,
+          5.4,
+          0.4,
+          0.3,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  }
+}
