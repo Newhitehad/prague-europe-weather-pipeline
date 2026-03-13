@@ -151,6 +151,15 @@ After a successful run:
 - three-day rolling metrics
 - mart quality-check summary
 
+## Dashboard preview
+Light mode (`Uranus`):
+
+![Dashboard light mode](docs/screenshots/dashboard-light.png)
+
+Dark mode (`Mercury`):
+
+![Dashboard dark mode](docs/screenshots/dashboard-dark.png)
+
 ## Repository structure
 ```text
 .

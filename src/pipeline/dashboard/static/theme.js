@@ -5,6 +5,16 @@
     dark: "Dark",
   };
 
+  function readQueryTheme() {
+    const params = new URLSearchParams(window.location.search);
+    const queryTheme = params.get("theme");
+    if (queryTheme === "light" || queryTheme === "dark") {
+      return queryTheme;
+    }
+
+    return null;
+  }
+
   function readStoredTheme() {
     try {
       const storedTheme = window.localStorage.getItem(STORAGE_KEY);
@@ -54,7 +64,7 @@
     }
   }
 
-  let activeTheme = readStoredTheme() || getSystemTheme();
+  let activeTheme = readQueryTheme() || readStoredTheme() || getSystemTheme();
   applyTheme(activeTheme);
 
   document.addEventListener("DOMContentLoaded", () => {
