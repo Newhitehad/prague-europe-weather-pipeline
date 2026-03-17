@@ -15,7 +15,6 @@ def test_dashboard_root_renders_empty_state(monkeypatch) -> None:
                 "latest_snapshot_at": None,
             },
             "current_weather": [],
-            "daily_summary": [],
             "rankings": [],
             "rolling_metrics": [],
             "quality": {
