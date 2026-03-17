@@ -3,6 +3,8 @@ from __future__ import annotations
 import logging
 from datetime import datetime, timezone
 
+import requests
+
 from pipeline.config import load_pipeline_config
 from pipeline.ingestion.fetch_weather import fetch_weather_for_city
 from pipeline.ingestion.normalize_response import build_raw_record
@@ -18,13 +20,19 @@ def run_ingestion() -> None:
     run_at_utc = datetime.now(timezone.utc)
 
     logger.info("Ingestion started for %d cities", len(config.cities))
+    failed_cities: list[str] = []
     for city in config.cities:
         logger.info("Fetching weather for city=%s", city)
-        fetch_result = fetch_weather_for_city(
-            city_name=city,
-            base_url=config.api_base_url,
-            timeout_seconds=config.request_timeout_seconds,
-        )
+        try:
+            fetch_result = fetch_weather_for_city(
+                city_name=city,
+                base_url=config.api_base_url,
+                timeout_seconds=config.request_timeout_seconds,
+            )
+        except (requests.RequestException, ValueError) as exc:
+            logger.error("Failed to fetch weather for city=%s: %s", city, exc)
+            failed_cities.append(city)
+            continue
 
         raw_record = build_raw_record(
             city_name=city,
@@ -38,6 +46,11 @@ def run_ingestion() -> None:
         )
         write_json(output_path, raw_record)
         logger.info("Saved raw file to %s", output_path)
+
+    if failed_cities:
+        raise RuntimeError(
+            "Ingestion failed for cities: " + ", ".join(failed_cities)
+        )
 
     logger.info("Ingestion completed.")
 
